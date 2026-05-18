@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "69cf7ec25e2afd4bd7a3c28f",
+    "name": "ABDURAHMONOVA MUNISA",
+    "employeeId": 81,
+    "hikvisionEmployeeId": "81",
+    "attendanceCount": 4
+  },
+  {
+    "_id": "69d3aec6d7856cacd9838f6d",
+    "name": "ABDURAHMANOVA MUNISA",
+    "employeeId": 1775480518508,
+    "hikvisionEmployeeId": "abdurahmonovamunisa",
+    "attendanceCount": 2
+  },
+  {
+    "_id": "69d484b312bc5df3b9bf839e",
+    "name": "ABDURAHMANOVA MUNISA",
+    "employeeId": 1775535283010,
+    "hikvisionEmployeeId": "abdurahmanovamunisa",
+    "attendanceCount": 2
+  }
+]

@@ -1,0 +1,397 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply transition-colors duration-300;
+  }
+}
+
+/* Staff Page Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+/* Custom Animations for Modern UI */
+@keyframes gradient-xy {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-gradient-xy {
+  animation: gradient-xy 15s ease infinite;
+  background-size: 400% 400%;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Snow Effect Animation */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) translateX(100px);
+    opacity: 0.3;
+  }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10vh;
+  z-index: 9999;
+  color: white;
+  font-size: 1em;
+  animation: snowfall linear infinite;
+  pointer-events: none;
+  user-select: none;
+}
+
+.snowflake:nth-of-type(1) {
+  left: 10%;
+  animation-duration: 10s;
+  animation-delay: 0s;
+}
+
+.snowflake:nth-of-type(2) {
+  left: 20%;
+  animation-duration: 12s;
+  animation-delay: 1s;
+  font-size: 0.8em;
+}
+
+.snowflake:nth-of-type(3) {
+  left: 30%;
+  animation-duration: 8s;
+  animation-delay: 2s;
+  font-size: 1.2em;
+}
+
+.snowflake:nth-of-type(4) {
+  left: 40%;
+  animation-duration: 15s;
+  animation-delay: 0s;
+}
+
+.snowflake:nth-of-type(5) {
+  left: 50%;
+  animation-duration: 11s;
+  animation-delay: 3s;
+  font-size: 0.9em;
+}
+
+.snowflake:nth-of-type(6) {
+  left: 60%;
+  animation-duration: 13s;
+  animation-delay: 1s;
+}
+
+.snowflake:nth-of-type(7) {
+  left: 70%;
+  animation-duration: 9s;
+  animation-delay: 2s;
+  font-size: 1.1em;
+}
+
+.snowflake:nth-of-type(8) {
+  left: 80%;
+  animation-duration: 14s;
+  animation-delay: 0s;
+}
+
+.snowflake:nth-of-type(9) {
+  left: 90%;
+  animation-duration: 10s;
+  animation-delay: 1.5s;
+  font-size: 0.85em;
+}
+
+.snowflake:nth-of-type(10) {
+  left: 15%;
+  animation-duration: 12s;
+  animation-delay: 2.5s;
+}
+
+.snowflake:nth-of-type(11) {
+  left: 25%;
+  animation-duration: 11s;
+  animation-delay: 0.5s;
+  font-size: 0.95em;
+}
+
+.snowflake:nth-of-type(12) {
+  left: 35%;
+  animation-duration: 13s;
+  animation-delay: 1.5s;
+}
+
+.snowflake:nth-of-type(13) {
+  left: 45%;
+  animation-duration: 9s;
+  animation-delay: 3s;
+  font-size: 1.15em;
+}
+
+.snowflake:nth-of-type(14) {
+  left: 55%;
+  animation-duration: 14s;
+  animation-delay: 0.5s;
+}
+
+.snowflake:nth-of-type(15) {
+  left: 65%;
+  animation-duration: 10s;
+  animation-delay: 2s;
+  font-size: 0.9em;
+}
+
+.snowflake:nth-of-type(16) {
+  left: 75%;
+  animation-duration: 12s;
+  animation-delay: 1s;
+}
+
+.snowflake:nth-of-type(17) {
+  left: 85%;
+  animation-duration: 11s;
+  animation-delay: 2.5s;
+  font-size: 1.05em;
+}
+
+.snowflake:nth-of-type(18) {
+  left: 95%;
+  animation-duration: 13s;
+  animation-delay: 0s;
+}
+
+.snowflake:nth-of-type(19) {
+  left: 5%;
+  animation-duration: 15s;
+  animation-delay: 1.5s;
+  font-size: 0.8em;
+}
+
+.snowflake:nth-of-type(20) {
+  left: 17%;
+  animation-duration: 10s;
+  animation-delay: 3s;
+}
+
+/* Slide in animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Scale animations */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Pulse animation */
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Utility classes for delays */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Minimal borders */
+.border-minimal {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.border-minimal-light {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  :root {
+    --brand-primary: #004a77;
+    --brand-primary-dark: #003a5e;
+    --brand-primary-light: #005a91;
+    --brand-primary-pale: #e6f0f7;
+    --gradient-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-green: linear-gradient(135deg, #0cebeb 0%, #20e3b2 100%);
+    --gradient-orange: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-purple: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  .dark {
+    --brand-primary: #005a91;
+    --brand-primary-dark: #004a77;
+    --brand-primary-light: #006eb1;
+    --brand-primary-pale: #1a2c38;
+  }
+}

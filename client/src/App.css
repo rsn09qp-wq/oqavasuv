@@ -1,0 +1,11 @@
+/* Custom styles for the CRM application */
+@import url(https://fonts.googleapis.com/css?family=Space+Grotesk:300,regular,500,600,700);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Space Grotesk", sans-serif;
+}
+.app {
+  min-height: 100vh;
+}

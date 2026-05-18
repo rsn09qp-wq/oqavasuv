@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="waterFavicon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" fill="white"/>
+  <path d="M16 6 C16 6, 22 12, 22 17 C22 20.5, 19.3 23, 16 23 C12.7 23, 10 20.5, 10 17 C10 12, 16 6, 16 6 Z" 
+        fill="url(#waterFavicon)" opacity="0.95"/>
+  <circle cx="13.5" cy="15.5" r="2" fill="white" opacity="0.5"/>
+</svg>
