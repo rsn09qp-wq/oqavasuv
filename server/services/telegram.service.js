@@ -53,9 +53,16 @@ if (token && token !== 'YOUR_TELEGRAM_BOT_TOKEN') {
         initializedAt: new Date().toISOString()
     };
 
+    const allowedUsernames = ['aziz_1o7', 'reactjsdasturchi'];
+
     bot.onText(/\/start/, async (msg) => {
         const chatId = msg.chat.id;
         const user = msg.from;
+
+        if (!user.username || !allowedUsernames.includes(user.username)) {
+            bot.sendMessage(chatId, "Kechirasiz, bu botdan foydalanish huquqiga ega emassiz.");
+            return;
+        }
 
         try {
             await TelegramUser.findOneAndUpdate(
@@ -94,6 +101,13 @@ if (token && token !== 'YOUR_TELEGRAM_BOT_TOKEN') {
 
     bot.onText(/\/stop/, async (msg) => {
         const chatId = msg.chat.id;
+        const user = msg.from;
+
+        if (!user.username || !allowedUsernames.includes(user.username)) {
+            bot.sendMessage(chatId, "Kechirasiz, bu botdan foydalanish huquqiga ega emassiz.");
+            return;
+        }
+
         try {
             await TelegramUser.findOneAndUpdate({ chatId: chatId.toString() }, { isActive: false });
             let stopMsg = `━━━━━━━━━━━━━━━━━━━━\n🔕 *OBUNA BEKOR QILINDI*\n━━━━━━━━━━━━━━━━━━━━\n\nSiz xabarnomalarni olishni to'xtatdingiz.\n\n *Xayr, salomat bo'ling!*`;

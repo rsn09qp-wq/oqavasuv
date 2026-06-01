@@ -976,129 +976,129 @@ const WaterUsagePage = () => {
 
 
         {/* Stats Cards - Dashboard style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
           {/* Jami */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-gray-50 dark:bg-slate-800 rounded-lg transition-colors">
-                <Users className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-gray-50 dark:bg-slate-800 rounded-lg transition-colors">
+                <Users className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-gray-600 dark:text-slate-400" />
               </div>
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 transition-colors">
+              <span className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 transition-colors">
                 100%
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">{totalEmployeesCount}</p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Jami</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Ro'yxat:</span>
-              <span className="text-sm font-semibold text-gray-600 dark:text-slate-400">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">{totalEmployeesCount}</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Jami</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Ro'yxat:</span>
+              <span className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-slate-400">
                 {totalEmployeesCount} ta
               </span>
             </div>
           </div>
 
           {/* Keldi */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg transition-colors">
-                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg transition-colors">
+                <CheckCircle className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 transition-colors">
+              <span className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 transition-colors">
                 {totalEmployeesCount > 0
                   ? Math.round((presentEmployeesCount / totalEmployeesCount) * 100)
                   : 0}
                 %
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">
               {presentEmployeesCount}
             </p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Keldi</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Hozir:</span>
-              <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Keldi</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Hozir:</span>
+              <span className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                 {presentEmployeesCount} ta
               </span>
             </div>
           </div>
 
           {/* Kech */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-amber-50 dark:bg-amber-900/30 rounded-lg transition-colors">
-                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-amber-50 dark:bg-amber-900/30 rounded-lg transition-colors">
+                <AlertCircle className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
               </div>
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-amber-50 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 transition-colors">
+              <span className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-amber-50 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 transition-colors">
                 {totalEmployeesCount > 0
                   ? Math.round((lateEmployeesCount / totalEmployeesCount) * 100)
                   : 0}
                 %
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">{lateEmployeesCount}</p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Kech</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Kechikkan:</span>
-              <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">{lateEmployeesCount}</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Kech</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Kechikkan:</span>
+              <span className="text-xs sm:text-sm font-semibold text-amber-600 dark:text-amber-400">
                 {lateEmployeesCount} ta
               </span>
             </div>
           </div>
 
           {/* Yo'q */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-red-50 dark:bg-red-900/30 rounded-lg transition-colors">
-                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-red-50 dark:bg-red-900/30 rounded-lg transition-colors">
+                <XCircle className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
               </div>
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-400 transition-colors">
+              <span className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-400 transition-colors">
                 {totalEmployeesCount > 0
                   ? Math.round((absentEmployeesCount / totalEmployeesCount) * 100)
                   : 0}
                 %
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">{absentEmployeesCount}</p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Yo'q</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Kelmagan:</span>
-              <span className="text-sm font-semibold text-red-600 dark:text-red-400">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">{absentEmployeesCount}</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Yo'q</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Kelmagan:</span>
+              <span className="text-xs sm:text-sm font-semibold text-red-600 dark:text-red-400">
                 {absentEmployeesCount} ta
               </span>
             </div>
           </div>
 
           {/* Erta ketgan */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg transition-colors">
-                <Clock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg transition-colors">
+                <Clock className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <span className="text-xs font-medium px-2 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 transition-colors">
+              <span className="text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 transition-colors">
                 {totalEmployeesCount > 0
                   ? Math.round((earlyEmployeesCount / totalEmployeesCount) * 100)
                   : 0}
                 %
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">{earlyEmployeesCount}</p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Erta ketgan</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Vaqtliroq:</span>
-              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">{earlyEmployeesCount}</p>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Erta ketgan</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Vaqtliroq:</span>
+              <span className="text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
                 {earlyEmployeesCount} ta
               </span>
             </div>
           </div>
 
           {/* Davomat % */}
-          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-5 shadow-sm transition-colors lg:col-span-1 xl:col-span-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg transition-colors">
-                <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl p-3 sm:p-4 md:p-5 shadow-sm transition-colors lg:col-span-1 xl:col-span-1">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="p-1.5 sm:p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg transition-colors">
+                <CheckCircle className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <span
-                className={`text-xs font-medium px-2 py-1 rounded-full transition-colors ${water_usagePercentage >= 90
+                className={`text-[10px] sm:text-xs font-medium px-1.5 py-0.5 sm:px-2 sm:py-1 rounded transition-colors ${water_usagePercentage >= 90
                   ? "bg-green-50 dark:bg-green-900/40 text-green-700 dark:text-green-400"
                   : water_usagePercentage >= 70
                     ? "bg-amber-50 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400"
@@ -1112,13 +1112,13 @@ const WaterUsagePage = () => {
                     : "Past"}
               </span>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
+            <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors">
               {water_usagePercentage}%
             </p>
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Davomat</p>
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 transition-colors">
-              <span className="text-xs text-gray-500 dark:text-slate-500">Foiz:</span>
-              <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5 sm:mt-1">Davomat</p>
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-slate-800/50 transition-colors">
+              <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500">Foiz:</span>
+              <span className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400">
                 {water_usagePercentage}%
               </span>
             </div>
