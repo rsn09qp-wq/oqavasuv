@@ -6,6 +6,7 @@ import Sidebar from "./components/CleanSidebar";
 import DashboardPage from "./pages/DashboardPage";
 import AttendancePage from "./pages/WaterUsagePage";
 import NotificationsPage from "./pages/NotificationsPage";
+import SettingsPage from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import BottomNav from "./components/BottomNav";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -158,6 +159,7 @@ function App() {
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/water-usage" element={<AttendancePage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 <Route
                   path="*"
                   element={<Navigate to="/dashboard" replace />}

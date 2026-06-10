@@ -5,6 +5,7 @@
 
 import express from "express";
 import mongoose from "mongoose";
+import TelegramUser from "../models/TelegramUser.js";
 
 const router = express.Router();
 
@@ -215,6 +216,45 @@ router.put("/config", async (req, res) => {
   } catch (error) {
     console.error("Config update error:", error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// ========== GET TELEGRAM USERS ==========
+router.get("/telegram-users", async (req, res) => {
+  try {
+    const users = await TelegramUser.find().sort({ subscribedAt: -1 });
+    res.json({
+      success: true,
+      data: users,
+      total: users.length,
+    });
+  } catch (error) {
+    console.error("Telegram users fetch error:", error);
+    res.status(500).json({ error: "Foydalanuvchilarni olishda xatolik yuz berdi" });
+  }
+});
+
+// ========== TOGGLE TELEGRAM USER ACCESS ==========
+router.put("/telegram-users/:id/toggle", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await TelegramUser.findById(id);
+    
+    if (!user) {
+      return res.status(404).json({ error: "Foydalanuvchi topilmadi" });
+    }
+
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: `Foydalanuvchi ${user.isActive ? 'faollashtirildi' : 'bloklandi'}`,
+      user
+    });
+  } catch (error) {
+    console.error("Telegram user toggle error:", error);
+    res.status(500).json({ error: "Foydalanuvchi holatini o'zgartirishda xato" });
   }
 });
 

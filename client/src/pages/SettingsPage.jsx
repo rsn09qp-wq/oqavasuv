@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Settings,
   Bell,
@@ -11,6 +11,10 @@ import {
   EyeOff,
   KeyRound,
   Shield,
+  Bot,
+  Search,
+  UserX,
+  UserCheck
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -44,6 +48,7 @@ const SettingsPage = () => {
     { id: "notifications", name: "Bildirishnomalar", icon: Bell },
     { id: "appearance", name: "Ko'rinish", icon: Palette },
     { id: "security", name: "Xavfsizlik", icon: Lock },
+    { id: "telegram", name: "Telegram Bot", icon: Bot },
   ];
 
   const handleInputChange = (key, value) => {
@@ -59,6 +64,41 @@ const SettingsPage = () => {
       duration: 3000,
       position: "top-right",
     });
+  };
+
+  const [telegramUsers, setTelegramUsers] = useState([]);
+  const [loadingTelegram, setLoadingTelegram] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === "telegram") {
+      fetchTelegramUsers();
+    }
+  }, [activeTab]);
+
+  const fetchTelegramUsers = async () => {
+    setLoadingTelegram(true);
+    try {
+      const response = await axios.get(`${API_BASE}/api/setup/telegram-users`);
+      if (response.data.success) {
+        setTelegramUsers(response.data.data);
+      }
+    } catch (error) {
+      toast.error("Telegram foydalanuvchilarni olishda xato");
+    } finally {
+      setLoadingTelegram(false);
+    }
+  };
+
+  const toggleTelegramUser = async (id) => {
+    try {
+      const response = await axios.put(`${API_BASE}/api/setup/telegram-users/${id}/toggle`);
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setTelegramUsers((prev) => prev.map((u) => (u._id === id ? { ...u, isActive: !u.isActive } : u)));
+      }
+    } catch (error) {
+      toast.error("Xatolik yuz berdi");
+    }
   };
 
   const ToggleSwitch = ({ checked, onChange, label, description }) => (
@@ -296,7 +336,126 @@ const SettingsPage = () => {
             </select>
           </div>
         </div>
+        </div>
       </div>
+    </div>
+  );
+
+  const renderTelegramSettings = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white transition-colors">
+            Telegram Bot Foydalanuvchilari
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-slate-400 transition-colors">
+            Botga ulangan foydalanuvchilarga xabar yuborishni ruxsat berish yoki cheklash
+          </p>
+        </div>
+        <button
+          onClick={fetchTelegramUsers}
+          className="p-2.5 bg-gray-100 dark:bg-slate-800 rounded-xl hover:bg-gray-200 dark:hover:bg-slate-700 transition-all text-gray-600 dark:text-gray-300"
+          title="Yangilash"
+        >
+          <Search className="w-5 h-5" />
+        </button>
+      </div>
+
+      {loadingTelegram ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <div className="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-200 dark:border-slate-800 overflow-hidden shadow-sm transition-colors">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse whitespace-nowrap">
+              <thead>
+                <tr className="bg-gray-50/50 dark:bg-slate-800/30 border-b border-gray-200 dark:border-slate-800">
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Foydalanuvchi</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Chat ID</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ulanish vaqti</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider text-center">Holat</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider text-right">Amal</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-slate-800/60">
+                {telegramUsers.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-12 text-center">
+                      <div className="flex flex-col items-center justify-center text-gray-500 dark:text-slate-400">
+                        <Bot className="w-12 h-12 mb-3 opacity-50" />
+                        <p className="font-medium text-sm">Hozircha botga ulangan foydalanuvchilar yo'q</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  telegramUsers.map((u) => (
+                    <tr key={u._id} className="hover:bg-gray-50 dark:hover:bg-slate-800/40 transition-colors group">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-50 dark:from-indigo-900/40 dark:to-blue-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold shadow-sm border border-indigo-50 dark:border-indigo-500/10">
+                            {(u.firstName?.[0] || u.username?.[0] || "?").toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="font-bold text-gray-900 dark:text-white transition-colors">
+                              {u.firstName} {u.lastName || ""}
+                            </div>
+                            <div className="text-xs font-medium text-gray-500 dark:text-slate-400 mt-0.5">
+                              @{u.username || "username_yoq"}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-600 dark:text-slate-300">
+                        {u.chatId}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">
+                        {new Date(u.subscribedAt).toLocaleString("uz-UZ", {
+                          day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                        })}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                            u.isActive
+                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
+                              : "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20"
+                          }`}
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${u.isActive ? "bg-emerald-500" : "bg-rose-500"}`}></span>
+                          {u.isActive ? "Faol" : "Bloklangan"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => toggleTelegramUser(u._id)}
+                          className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 ${
+                            u.isActive
+                              ? "bg-white dark:bg-slate-800 text-rose-600 dark:text-rose-400 border border-gray-200 dark:border-slate-700 hover:border-rose-200 dark:hover:border-rose-500/30 hover:bg-rose-50 dark:hover:bg-rose-500/10"
+                              : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm shadow-emerald-500/20"
+                          }`}
+                        >
+                          {u.isActive ? (
+                            <>
+                              <UserX className="w-3.5 h-3.5" />
+                              Cheklash
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck className="w-3.5 h-3.5" />
+                              Ruxsat berish
+                            </>
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 
@@ -312,6 +471,8 @@ const SettingsPage = () => {
         return renderAppearanceSettings();
       case "security":
         return renderSecuritySettings();
+      case "telegram":
+        return renderTelegramSettings();
       default:
         return renderGeneralSettings();
     }

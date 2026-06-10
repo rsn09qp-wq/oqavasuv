@@ -55,6 +55,12 @@ const CleanSidebar = ({ isOpen, onClose, onLogout }) => {
       icon: Bell,
       label: "Bildirishnomalar",
     },
+    {
+      id: "settings",
+      path: "/settings",
+      icon: Settings,
+      label: "Sozlamalar",
+    },
   ];
 
   return (
