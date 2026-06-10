@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Calendar, Bell, Droplets, X, LogOut } from "lucide-react";
+import { Home, Calendar, Bell, Droplets, X, LogOut, Settings } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const CleanSidebar = ({ isOpen, onClose, onLogout }) => {

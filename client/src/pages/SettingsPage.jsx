@@ -336,7 +336,6 @@ const SettingsPage = () => {
             </select>
           </div>
         </div>
-        </div>
       </div>
     </div>
   );
