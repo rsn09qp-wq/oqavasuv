@@ -3,10 +3,14 @@ import mongoose from 'mongoose';
 const telegramUserSchema = new mongoose.Schema({
     chatId: {
         type: String,
-        required: true,
+        sparse: true,
         unique: true
     },
-    username: String,
+    username: {
+        type: String,
+        sparse: true,
+        unique: true
+    },
     firstName: String,
     lastName: String,
     isActive: {

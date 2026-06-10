@@ -101,6 +101,30 @@ const SettingsPage = () => {
     }
   };
 
+  const [newUsername, setNewUsername] = useState("");
+  const [addingUser, setAddingUser] = useState(false);
+
+  const addTelegramUser = async (e) => {
+    e.preventDefault();
+    if (!newUsername.trim()) return;
+
+    setAddingUser(true);
+    try {
+      const response = await axios.post(`${API_BASE}/api/setup/telegram-users`, {
+        username: newUsername,
+      });
+      if (response.data.success) {
+        toast.success("Foydalanuvchi qo'shildi!");
+        setNewUsername("");
+        fetchTelegramUsers();
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Xatolik yuz berdi");
+    } finally {
+      setAddingUser(false);
+    }
+  };
+
   const ToggleSwitch = ({ checked, onChange, label, description }) => (
     <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-slate-800 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group">
       <div>
@@ -360,6 +384,29 @@ const SettingsPage = () => {
         </button>
       </div>
 
+      <form onSubmit={addTelegramUser} className="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm flex items-center gap-3">
+        <div className="flex-1 relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span className="text-gray-500 dark:text-slate-400 font-medium">@</span>
+          </div>
+          <input
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            placeholder="username (masalan: reactjsdasturchi)"
+            className="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all font-medium dark:text-white"
+            disabled={addingUser}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={!newUsername.trim() || addingUser}
+          className="px-5 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm active:scale-95 whitespace-nowrap"
+        >
+          {addingUser ? "Qo'shilmoqda..." : "Ruxsat berish"}
+        </button>
+      </form>
+
       {loadingTelegram ? (
         <div className="flex justify-center items-center py-12">
           <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
@@ -406,7 +453,9 @@ const SettingsPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-600 dark:text-slate-300">
-                        {u.chatId}
+                        {u.chatId ? u.chatId : (
+                          <span className="text-gray-400 dark:text-slate-500 italic text-xs">Ulanmagan</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500 dark:text-slate-400">
                         {new Date(u.subscribedAt).toLocaleString("uz-UZ", {
@@ -414,16 +463,23 @@ const SettingsPage = () => {
                         })}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
-                            u.isActive
-                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
-                              : "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20"
-                          }`}
-                        >
-                          <span className={`w-1.5 h-1.5 rounded-full ${u.isActive ? "bg-emerald-500" : "bg-rose-500"}`}></span>
-                          {u.isActive ? "Faol" : "Bloklangan"}
-                        </span>
+                        {!u.isActive && u.chatId ? (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            Kutilmoqda
+                          </span>
+                        ) : (
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                              u.isActive
+                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
+                                : "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20"
+                            }`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${u.isActive ? "bg-emerald-500" : "bg-rose-500"}`}></span>
+                            {u.isActive ? "Faol" : "Bloklangan"}
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button

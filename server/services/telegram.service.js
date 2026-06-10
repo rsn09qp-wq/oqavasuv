@@ -53,30 +53,43 @@ if (token && token !== 'YOUR_TELEGRAM_BOT_TOKEN') {
         initializedAt: new Date().toISOString()
     };
 
-    const allowedUsernames = ['aziz_1o7', 'reactjsdasturchi'];
-
     bot.onText(/\/start/, async (msg) => {
         const chatId = msg.chat.id;
         const user = msg.from;
 
-        if (!user.username || !allowedUsernames.includes(user.username)) {
-            bot.sendMessage(chatId, "Kechirasiz, bu botdan foydalanish huquqiga ega emassiz.");
-            return;
-        }
-
         try {
-            await TelegramUser.findOneAndUpdate(
-                { chatId: chatId.toString() },
-                {
+            // Check if user exists by chatId
+            let telegramUser = await TelegramUser.findOne({ chatId: chatId.toString() });
+
+            // If not found by chatId, check by username (if preemptively added)
+            if (!telegramUser && user.username) {
+                telegramUser = await TelegramUser.findOne({ username: user.username });
+            }
+
+            if (telegramUser) {
+                // Update existing user
+                telegramUser.chatId = chatId.toString();
+                telegramUser.firstName = user.first_name;
+                telegramUser.lastName = user.last_name;
+                if (!telegramUser.username) telegramUser.username = user.username;
+                if (!telegramUser.subscribedAt) telegramUser.subscribedAt = new Date();
+                await telegramUser.save();
+            } else {
+                // Create new user, but isActive = false by default
+                telegramUser = await TelegramUser.create({
                     chatId: chatId.toString(),
                     username: user.username,
                     firstName: user.first_name,
                     lastName: user.last_name,
-                    isActive: true,
+                    isActive: false,
                     subscribedAt: new Date()
-                },
-                { upsert: true, new: true }
-            );
+                });
+            }
+
+            if (!telegramUser.isActive) {
+                bot.sendMessage(chatId, "⏳ Sizning so'rovingiz qabul qilindi. Admindan ruxsat kutilmoqda. Ruxsat berilgandan so'ng bot xizmatlaridan foydalanishingiz mumkin.");
+                return;
+            }
 
             const userName = user.first_name || user.username || 'Foydalanuvchi';
 
@@ -93,7 +106,7 @@ if (token && token !== 'YOUR_TELEGRAM_BOT_TOKEN') {
             welcomeMsg += `🤖 *Suv Ta'minot Bot* | v2.1.0`;
 
             bot.sendMessage(chatId, welcomeMsg, { parse_mode: 'Markdown' });
-            console.log(`✅ Yangi foydalanuvchi qo'shildi: ${userName} (${chatId})`);
+            console.log(`✅ Foydalanuvchi ulandi/yangilandi: ${userName} (${chatId})`);
         } catch (error) {
             console.error('❌ Error saving telegram user:', error);
         }
@@ -101,12 +114,6 @@ if (token && token !== 'YOUR_TELEGRAM_BOT_TOKEN') {
 
     bot.onText(/\/stop/, async (msg) => {
         const chatId = msg.chat.id;
-        const user = msg.from;
-
-        if (!user.username || !allowedUsernames.includes(user.username)) {
-            bot.sendMessage(chatId, "Kechirasiz, bu botdan foydalanish huquqiga ega emassiz.");
-            return;
-        }
 
         try {
             await TelegramUser.findOneAndUpdate({ chatId: chatId.toString() }, { isActive: false });
@@ -148,7 +155,9 @@ async function broadcastMessage(message) {
         let recipients = new Set();
         try {
             const activeUsers = await TelegramUser.find({ isActive: true });
-            activeUsers.forEach(u => recipients.add(u.chatId));
+            activeUsers.forEach(u => {
+                if (u.chatId) recipients.add(u.chatId);
+            });
         } catch (dbError) {
             console.error('⚠️ Database connection failed while fetching users:', dbError.message);
         }

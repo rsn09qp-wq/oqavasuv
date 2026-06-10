@@ -258,4 +258,38 @@ router.put("/telegram-users/:id/toggle", async (req, res) => {
   }
 });
 
+// ========== ADD TELEGRAM USER PREEMPTIVELY ==========
+router.post("/telegram-users", async (req, res) => {
+  try {
+    const { username } = req.body;
+    if (!username) {
+      return res.status(400).json({ error: "Username kiritilishi shart" });
+    }
+
+    const cleanUsername = username.replace("@", "").trim();
+
+    // Check if user exists
+    const existing = await TelegramUser.findOne({ username: cleanUsername });
+    if (existing) {
+      return res.status(400).json({ error: "Ushbu foydalanuvchi allaqachon mavjud" });
+    }
+
+    // Create preemptive user
+    const user = await TelegramUser.create({
+      username: cleanUsername,
+      isActive: true, // By default allow them
+      subscribedAt: new Date()
+    });
+
+    res.json({
+      success: true,
+      message: "Foydalanuvchi muvaffaqiyatli qo'shildi",
+      user
+    });
+  } catch (error) {
+    console.error("Telegram user add error:", error);
+    res.status(500).json({ error: "Foydalanuvchi qo'shishda xatolik yuz berdi" });
+  }
+});
+
 export default router;
