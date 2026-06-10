@@ -1,8 +1,18 @@
 import express from 'express';
 import User from '../models/User.js';
 import { generateToken, authenticateToken } from '../middleware/auth.js';
+import rateLimit from 'express-rate-limit';
 
 const router = express.Router();
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 daqiqa
+  max: 10, // Har bir IP uchun 15 daqiqada faqat 10 ta so'rov
+  message: {
+    error: 'Too many login attempts',
+    message: "Juda ko'p marta noto'g'ri urinish qildingiz. Iltimos 15 daqiqadan so'ng qayta urinib ko'ring."
+  }
+});
 
 /**
  * POST /api/auth/register
@@ -69,7 +79,7 @@ router.post('/register', async (req, res) => {
  * POST /api/auth/login
  * Tizimga kirish
  */
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
 

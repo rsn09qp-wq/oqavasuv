@@ -14,12 +14,15 @@ dotenv.config({ path: envPath });
 
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 import { createServer } from "http";
 import connectDB from "./db/connection.js";
 import mongoose from "mongoose";
 import { initializeSocket } from "./services/socket.service.js";
 import { corsOptions } from "./config/cors.js";
 import { initializeScheduler } from "./services/scheduler.service.js";
+import { authenticateToken } from "./middleware/auth.js";
 
 // Routes
 import webhookRoutes from "./webhookRoutes.js";
@@ -44,14 +47,16 @@ const httpServer = createServer(app);
 const io = initializeSocket(httpServer, { cors: corsOptions });
 
 // Middleware
+app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(mongoSanitize());
 
 // ==================== ROUTES ====================
 
 // Setup routes
 console.log("🛠️ Registering /api/setup routes...");
-app.use("/api/setup", setupRoutes);
+app.use("/api/setup", authenticateToken, setupRoutes);
 
 // Webhook routes (for Hikvision terminal integration)
 app.use("/webhook", webhookRoutes);
@@ -151,7 +156,7 @@ app.get("/api/system/db-stats", async (req, res) => {
 // ==================== ATTENDANCE ENDPOINTS ====================
 
 // Get all attendance records with optional date filter
-app.get("/api/attendance", async (req, res) => {
+app.get("/api/attendance", authenticateToken, async (req, res) => {
   try {
     const { date } = req.query;
     const query = date ? { date } : {};
@@ -171,7 +176,7 @@ app.get("/api/attendance", async (req, res) => {
 });
 
 // Get attendance for today
-app.get("/api/attendance/today", async (req, res) => {
+app.get("/api/attendance/today", authenticateToken, async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const records = await Attendance.find({
@@ -193,7 +198,7 @@ app.get("/api/attendance/today", async (req, res) => {
 });
 
 // Get attendance statistics
-app.get("/api/attendance/stats", async (req, res) => {
+app.get("/api/attendance/stats", authenticateToken, async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
 
@@ -225,7 +230,7 @@ app.get("/api/attendance/stats", async (req, res) => {
 // ==================== EMPLOYEE ENDPOINTS ====================
 
 // Get all employees
-app.get("/api/employees", async (req, res) => {
+app.get("/api/employees", authenticateToken, async (req, res) => {
   try {
     const employees = await Employee.find();
     res.json({
@@ -240,7 +245,7 @@ app.get("/api/employees", async (req, res) => {
 });
 
 // Get employee by ID
-app.get("/api/employees/:id", async (req, res) => {
+app.get("/api/employees/:id", authenticateToken, async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
     if (!employee) {
@@ -257,7 +262,7 @@ app.get("/api/employees/:id", async (req, res) => {
 });
 
 // Get all staff (alias for employees)
-app.get("/api/all-staff", async (req, res) => {
+app.get("/api/all-staff", authenticateToken, async (req, res) => {
   try {
     const employees = await Employee.find();
     res.json({
@@ -273,7 +278,7 @@ app.get("/api/all-staff", async (req, res) => {
 });
 
 // Update employee (phone and staffType)
-app.put("/api/employee/:id", async (req, res) => {
+app.put("/api/employee/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { phone, staffType, department } = req.body;
@@ -304,7 +309,7 @@ app.put("/api/employee/:id", async (req, res) => {
 });
 
 // Get water usage (attendance) records by date
-app.get("/api/water_usage", async (req, res) => {
+app.get("/api/water_usage", authenticateToken, async (req, res) => {
   try {
     const { date } = req.query;
 
@@ -350,7 +355,7 @@ app.get("/api/water_usage", async (req, res) => {
 });
 
 // Get water usage stats
-app.get("/api/water_usage/stats", async (req, res) => {
+app.get("/api/water_usage/stats", authenticateToken, async (req, res) => {
   try {
     const { date } = req.query;
     const queryDate = date || new Date().toISOString().split("T")[0];

@@ -6,6 +6,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import TelegramUser from "../models/TelegramUser.js";
+import { requireRole } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -106,7 +107,7 @@ router.get("/status", async (req, res) => {
 });
 
 // ========== SAVE SETUP (CONFIGURE ORGANIZATION) ==========
-router.post("/configure", async (req, res) => {
+router.post("/configure", requireRole('admin'), async (req, res) => {
   try {
     const {
       organizationId,
@@ -199,7 +200,7 @@ router.get("/config", async (req, res) => {
 });
 
 // ========== UPDATE ORGANIZATION CONFIG ==========
-router.put("/config", async (req, res) => {
+router.put("/config", requireRole('admin'), async (req, res) => {
   try {
     const orgId = process.env.ORGANIZATION_ID || "default";
     const config = await OrganizationConfig.findOneAndUpdate(
@@ -235,7 +236,7 @@ router.get("/telegram-users", async (req, res) => {
 });
 
 // ========== TOGGLE TELEGRAM USER ACCESS ==========
-router.put("/telegram-users/:id/toggle", async (req, res) => {
+router.put("/telegram-users/:id/toggle", requireRole('admin'), async (req, res) => {
   try {
     const { id } = req.params;
     const user = await TelegramUser.findById(id);
@@ -259,7 +260,7 @@ router.put("/telegram-users/:id/toggle", async (req, res) => {
 });
 
 // ========== ADD TELEGRAM USER PREEMPTIVELY ==========
-router.post("/telegram-users", async (req, res) => {
+router.post("/telegram-users", requireRole('admin'), async (req, res) => {
   try {
     const { username } = req.body;
     if (!username) {
