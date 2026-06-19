@@ -1,58 +1,92 @@
-# Oqava Suv CRM - Employee Attendance & Water Management System
+# OQAVA SUV CRM
 
-## Loyiha Haqida (Project Overview)
-Bu loyiha tashkilotlar (jumladan, "Oqava Suv" MChJ kabi) uchun xodimlar davomatini nazorat qilish va boshqarishga mo'ljallangan kompleks CRM tizimidir. Tizim Hikvision biometrik qurilmalari bilan integratsiya qilingan bo'lib, xodimlarning kelib-ketish vaqtlarini aniq va avtomatik tarzda qayd etadi hamda Telegram orqali bildirishnomalar yuboradi.
+Oqava suv (yoki istalgan boshqa turdagi) kompaniyalar uchun xodimlar davomatini nazorat qilish va boshqarishga mo'ljallangan to'liq funksional CRM tizimi.
 
-### Tizim Arxitekturasi
-- **Hikvision Biometric Terminal**: Xodimlarning yuz/barmoq izi orqali kirish-chiqishlarini qayd qiladi.
-- **Mahalliy Server (Admin PC)**: Hikvision qurilmasidan keladigan webhook so'rovlarini (Port 5000) qabul qilib oladi va xodimning holatini qayta ishlab, bulutli bazaga (MongoDB Atlas) yuboradi.
-- **Bulutli API (Render.com)**: Node.js va Express da yozilgan backend. Frontend bilan ma'lumot almashinuvini ta'minlaydi.
-- **Frontend Dashboard (Netlify)**: React.js da yozilgan boshqaruv paneli. Administratorlar uchun davomat statistikasi, xodimlar ro'yxati va tizim sozlamalarini boshqarish imkonini beradi.
-- **Telegram Bot**: `node-cron` yordamida har kuni ertalab 09:00 da va kechqurun 22:00 da rahbariyat va ruxsat etilgan foydalanuvchilarga kunlik davomat hisobotlarini yuboradi.
+📦 Texnologiyalar
 
----
+| Layer | Stack |
+| --- | --- |
+| Backend | Node.js, Express, MongoDB (Mongoose) |
+| Frontend | React, Vite, TailwindCSS, Lucide React |
+| Real-time | Socket.io |
+| Hardware | Hikvision Biometric Terminal (ISUP/Webhook) |
+| Notifications | Telegram Bot (node-telegram-bot-api, node-cron) |
+| Hosting | Render.com (backend), Netlify (frontend) |
 
-## Texnologiyalar (Technologies Used)
-- **Frontend**: React.js, Tailwind CSS, Vite, Axios, Lucide React
-- **Backend**: Node.js, Express.js, MongoDB (Mongoose), Socket.io, node-cron, node-telegram-bot-api
-- **Infratuzilma**: Netlify (Frontend hosting), Render.com (Backend hosting), MongoDB Atlas (Database)
+🏗️ Arxitektura
 
----
+```
+oqava suv/
+├── server/
+│   ├── controllers/      # HTTP handler'lar (biznes logika)
+│   ├── services/         # Asosiy biznes logika (telegram, scheduler, hikvision)
+│   ├── models/           # Mongoose schema'lar
+│   ├── routes/           # Express router'lar
+│   ├── middleware/       # auth, xavfsizlik tekshiruvlari
+│   ├── utils/            # yordamchi funksiyalar
+│   ├── webhookRoutes.js  # Hikvision terminali uchun Webhook qabul qilgich
+│   └── index.js          # Entry point
+└── client/
+    ├── src/
+    │   ├── components/   # UI komponentlar (Dashboard, Sidebar)
+    │   ├── pages/        # Sahifalar (Settings, Notifications, kelish-ketish)
+    │   ├── config.js     # API manzillari
+    │   └── App.jsx       # Asosiy router va interceptor'lar
+    └── vite.config.js
+```
 
-## O'rnatish va Ishga tushirish (Setup & Installation)
+🚀 Local Setup
 
-### 1. Mahalliy Server (Admin PC) qismi
-Mahalliy server uzluksiz ishlab turishi shart (biometrik qurilma ma'lumotlarini qabul qilish uchun).
-1. `server/.env` faylida quyidagilar bo'lishi shart:
-   - `PORT=5000` (Hikvision qurilmasi mo'ljallangan port)
-   - `MONGODB_URI` (Ma'lumotlar bazasi manzili)
-2. Serverni fonga (background) ishga tushirish uchun `start-server-background.vbs` skriptidan foydalaniladi. Bu terminal oynasini ochmasdan, kompyuter yonganda serverni avtomatik ishga tushiradi.
+Talablar
+- Node.js >= 18
+- MongoDB Atlas klaster (yoki local MongoDB)
+- Hikvision Biometric Terminal (Ixtiyoriy, davomatni avtomatlashtirish uchun)
 
-### 2. Frontend qismi
-1. `client/.env` faylida `VITE_API_URL` bulutli API manziliga (yoki mahalliy `http://localhost:5000`) yo'naltirilgan bo'lishi kerak.
-2. Ishga tushirish:
-   ```bash
-   cd client
-   npm install
-   npm run dev
-   ```
+1. Clone va install
 
----
+```bash
+git clone <repo-url>
+cd oqava suv
 
-## Qilingan So'nggi Ishlar va Tuzatishlar (Recent Fixes & Updates)
-Tizimda yuzaga kelgan "Dashboard'da ma'lumotlar ko'rinmay qolishi" va "Telegram bot xabar yubormasligi" kabi jiddiy muammolar doirasida quyidagi ishlar (Senior Level darajasida) tahlil qilinib, to'liq tuzatildi:
+# Backend
+cd server
+npm install
 
-### 1. Mahalliy Server Ishga Tushishidagi Xatoliklar Bartaraf Etildi
-- **Muammo:** Loyiha papkasi joylashuvi o'zgargani sababli kompyuter yonganda server avtomatik ishga tushmay qolgan edi (`start-server.bat`, `start-server.ps1` va `start-server-background.vbs` fayllarida eski manzil `C:\bm-crm-server` qolib ketgan). Shu sababli Hikvision'dan keladigan ma'lumotlar uzilib qolgan.
-- **Yechim:** Barcha skriptlardagi manzillar joriy `F:\oqava suv\server` papkasiga to'g'irlandi. Server to'g'ri ishlashi uchun `.env` faylidagi port `8000` dan terminalga mos keluvchi `5000` portiga o'zgartirildi.
-- **Natija:** Server fonga muvaffaqiyatli ishga tushirildi. Telegram bot (`node-cron` orqali ishlaydigan taymer) yana o'z vaqtida (09:00 va 22:00 da) ishlaydigan holatga keltirildi.
+# Frontend
+cd ../client
+npm install
+```
 
-### 2. Frontend'da Autorizatsiya Xatoligi (`401 Unauthorized`) Tuzatildi
-- **Muammo:** `DashboardPage.jsx` sahifasida ma'lumotlarni tortib olish uchun oddiy `fetch()` ishlatilgan bo'lib, u so'rovlarga xavfsizlik tokenini (JWT) qo'shmasdan yuborayotgan edi. Buning oqibatida server so'rovlarni "Ruxsat etilmagan" (401) deya qaytarib, Dashboard'da ma'lumotlar o'rniga 0 ko'rsatgan.
-- **Yechim:** So'rovlar `fetch` dan o'chirilib, barcha sahifalardagidek `axios` ga o'tkazildi (interceptor yordamida token avtomatik biriktiriladi). Bu orqali API ulanishlari to'liq himoyalandi.
+2. Environment variables
 
-### 3. API URL Manzillari Unifikatsiya Qilindi (Birlashtirildi)
-- **Muammo:** Tizimning ba'zi qismlari (masalan, Settings sahifasi) xato joydan API URL olardi (ikkinchi turdagi eski URL'lar).
-- **Yechim:** `App.jsx`, `SettingsPage.jsx` va `DashboardPage.jsx` fayllari tahrirlanib, barcha ulanishlar markaziy `config.js` faylidagi bitta `API_URL` ga bog'lab qo'yildi. Natijada loyihada URL parchalanishiga chek qo'yildi.
+```bash
+# server/.env faylini yarating
+cp server/.env.example server/.env
 
-**Eslatma:** Agar kelajakda Netlify saytida backend o'zgarishlari (yangi route'lar, masalan Telegram userlarni boshqarish) 404 (Topilmadi) xatosini bersa, bu Render.com bulutli serveringizni so'nggi Github o'zgarishlari bilan manual (qo'lda) yangilanmaganligidan dalolat beradi. Bunday holda Render dagi loyihani oxirgi Github commit'iga qarab deploy qilish zarur.
+# client/.env faylini yarating
+cp client/.env.example client/.env
+```
+
+Muhim ENV variable'lar (Server):
+
+| Variable | Tavsif | Majburiy |
+| --- | --- | --- |
+| MONGODB_URI | MongoDB Atlas connection string | ✅ |
+| PORT | Mahalliy server porti (terminal 5000 ga sozlangan) | ✅ |
+| JWT_SECRET | Access token signing key | ✅ |
+| CORS_ORIGINS | Frontend URL (CORS uchun) | ✅ |
+| TELEGRAM_BOT_TOKEN | Telegram bot tokeni | ✅ |
+| TELEGRAM_CHAT_ID | Bildirishnomalar boradigan guruh ID'si | ✅ |
+
+Muhim ENV variable'lar (Client):
+
+| Variable | Tavsif | Majburiy |
+| --- | --- | --- |
+| VITE_API_URL | Backend API manzili | ✅ |
+
+✅ Qilingan So'nggi Yangilanishlar (Senior Level Fixes)
+
+- Mahalliy Server Uzluksizligi: Kompyuter yonganda avtomatik ravishda mahalliy webhook server fonga (background) ishga tushishi uchun `.bat`, `.ps1` va `.vbs` skriptlaridagi yo'nalish manzillari to'liq to'g'irlandi. Hikvision terminalining standart ishlashiga moslash uchun port aynan `5000` ga biriktirildi.
+- Autorizatsiya Xatosi (401 Unauthorized): Frontend (Netlify) tizimidan serverga so'rov yuborishda auth tokenini unutib qo'yuvchi eski `fetch` o'chirilib, barcha joyda xavfsiz va markazlashgan interceptor'ga ega `axios` kutubxonasi o'rnatildi.
+- API Routing va URL Muvofiqlashtirish: Kod bo'ylab tartibsiz tarqalib ketgan URL o'zgaruvchilaridan (masalan, ikkilangan `VITE_API_BASE`) voz kechilib, barcha sahifalar faqat markazlashgan `config.js` ichidagi yagona `API_URL` ga bog'landi. Tizim arxitekturasi barqarorlashtirildi.
+- Telegram Taymerlari: `node-cron` va bot logikasi to'xtab qolmasligi uchun Local Serverni doimiy ishlatish yechimi joriy etildi. Endi tizim aniq soat 09:00 va 22:00 da o'z-o'zidan hisobot jo'natadi.
