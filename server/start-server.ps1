@@ -1,7 +1,7 @@
 # BM CRM Server - Avtomatik Ishga Tushirish
 # PowerShell script
 
-$serverPath = "C:\bm-crm-server"
+$serverPath = "f:\oqava suv\server"
 
 Write-Host "🚀 BM CRM Server ishga tushirilmoqda..." -ForegroundColor Green
 

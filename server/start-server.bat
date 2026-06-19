@@ -5,6 +5,6 @@ REM Bu fayl Windows startup'da avtomatik ishga tushadi
 echo Starting BM CRM Server...
 
 REM PowerShell scriptni ishga tushirish
-PowerShell -NoProfile -ExecutionPolicy Bypass -File "C:\bm-crm-server\start-server.ps1"
+PowerShell -NoProfile -ExecutionPolicy Bypass -File "f:\oqava suv\server\start-server.ps1"
 
 pause
